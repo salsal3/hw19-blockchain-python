@@ -12,6 +12,7 @@ mnemonic=os.getenv("mnemonic")
 # Import constants.py and necessary functions from bit and web3
 from constants import *
 from bit import wif_to_key
+from bit import PrivateKeyTestnet
 
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
@@ -26,15 +27,28 @@ def derive_wallets(coin, stdout=subprocess.PIPE, shell=True):
     p_status = p.wait()
     return json.loads(output)
 
+
 # Create a dictionary object called coins to store the output from `derive_wallets`.
 coins = {
     'btc-test': derive_wallets(BTCTEST),
     'eth': derive_wallets(ETH),
     }
+coins
+
 
 # Create a function called `priv_key_to_account` that converts privkey strings to account objects.
-# def priv_key_to_account(# YOUR CODE HERE):
-    # YOUR CODE HERE
+def priv_key_to_account(coin):#, priv_key):
+    if coin == ETH:
+        priv_key = Account.privateKeyToAccount(coins[coin][0]['privkey'])
+        return priv_key
+    elif coin == BTCTEST:
+        priv_key = PrivateKeyTestnet(coins[coin][0]['privkey'])
+        return priv_key
+print(priv_key_to_account(ETH))
+print()
+print(priv_key_to_account(BTCTEST))
+print()
+
 
 # Create a function called `create_tx` that creates an unsigned transaction appropriate metadata.
 # def create_tx(account, recipient, amount):
