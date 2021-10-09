@@ -30,20 +30,19 @@ def derive_wallets(coin, stdout=subprocess.PIPE, shell=True):
 
 # Create a dictionary object called coins to store the output from `derive_wallets`.
 coins = {
-    'btc-test': derive_wallets(BTCTEST),
-    'eth': derive_wallets(ETH),
+    ETH: derive_wallets(ETH),
+    BTCTEST: derive_wallets(BTCTEST),
     }
-coins
+print(coins)
+print()
 
 
 # Create a function called `priv_key_to_account` that converts privkey strings to account objects.
-def priv_key_to_account(coin):#, priv_key):
+def priv_key_to_account(coin):
     if coin == ETH:
-        priv_key = Account.privateKeyToAccount(coins[coin][0]['privkey'])
-        return priv_key
-    elif coin == BTCTEST:
-        priv_key = PrivateKeyTestnet(coins[coin][0]['privkey'])
-        return priv_key
+        return Account.privateKeyToAccount(coins[coin][0]['privkey'])
+    if coin == BTCTEST:
+        return PrivateKeyTestnet(coins[coin][0]['privkey'])
 print(priv_key_to_account(ETH))
 print()
 print(priv_key_to_account(BTCTEST))
@@ -51,20 +50,34 @@ print()
 
 
 # Create a function called `create_tx` that creates an unsigned transaction appropriate metadata.
-# def create_tx(account, recipient, amount):
-    # gasEstimate = w3.eth.estimateGas(
-    #     {'from': account.address, 'to': recipient, 'value': amount}
-    # )
-    # return {
-    #     'from': account.address,
-    #     'to': recipient,
-    #     'value': amount,
-    #     'gasPrice': w3.eth.gasPrice,
-    #     'gas': gasEstimate,
-    #     'nonce': w3.eth.getTransactionCount(account.address),
-    # }
+def create_tx(coin, account, to, amount):
+    if coin == ETH:
+        # Convert ETH to WEI
+        value = w3.toWei(amount, coin)
+        gasEstimate = w3.eth.estimateGas({'from': account, 'to': to, 'amount': value})
+        return {
+            'from': account,
+            'to': to,
+            'value': value,
+            'gasPrice': w3.eth.gasPrice,
+            'gas': gasEstimate,
+            'nonce': w3.eth.getTransactionCount(account),
+            'chainID': w3.eth.chain_id
+        }
+    if coin == BTCTEST:
+        return PrivateKeyTestnet.prepare_transaction(account.address, [(to, amount, BTC)])
 
 
 # Create a function called `send_tx` that calls `create_tx`, signs and sends the transaction.
-# def send_tx(# YOUR CODE HERE):
-    # YOUR CODE HERE
+def send_tx(coin, account, recipient, amount):
+    if coin == ETH:
+        tx = create_tx(coin, account.address, to, amount)
+        signed_tx = account.signTransaction(tx)
+        return w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+    if coin == BTCTEST:
+        tx = create_tx(coin, account.address, to, amount)
+        signed_tx = account.sign_transaction(tx)
+        return NetworkAPI.broadcast_tx_testnet(signed)
+
+
+
