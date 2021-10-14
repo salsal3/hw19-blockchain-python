@@ -1,0 +1,40 @@
+=============== Oct 14, 2021 (EDT) ===============
+15:41:20.762511 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:41:20.849346 db@open opening
+15:41:20.854046 version@stat F·[] S·0B[] Sc·[]
+15:41:20.931492 db@janitor F·2 G·0
+15:41:20.931492 db@open done T·81.1552ms
+15:41:21.003181 db@close closing
+15:41:21.004181 db@close done T·999.8µs
+=============== Oct 14, 2021 (EDT) ===============
+15:57:20.489946 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:57:20.510442 version@stat F·[] S·0B[] Sc·[]
+15:57:20.510442 db@open opening
+15:57:20.511442 journal@recovery F·1
+15:57:20.518438 journal@recovery recovering @1
+15:57:20.596403 memdb@flush created L0@2 N·15 S·1KiB "H\xcd(..\f1\xdb,v8":"\xe3\xe1\xf1..\xcbQJ,v5"
+15:57:20.604191 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+15:57:20.730085 db@janitor F·3 G·0
+15:57:20.730085 db@open done T·219.6431ms
+=============== Oct 14, 2021 (EDT) ===============
+15:58:21.909657 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:58:21.910654 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+15:58:21.911653 db@open opening
+15:58:21.911653 journal@recovery F·1
+15:58:21.920648 journal@recovery recovering @3
+15:58:21.969282 memdb@flush created L0@5 N·10 S·824B "Dat..ion,v17":"unc..own,v26"
+15:58:21.977279 version@stat F·[2] S·1KiB[1KiB] Sc·[0.50]
+15:58:22.104698 db@janitor F·4 G·0
+15:58:22.104698 db@open done T·193.0445ms
+16:08:36.595804 db@close closing
+16:08:36.596799 db@close done T·995.6µs
+=============== Oct 14, 2021 (EDT) ===============
+16:09:18.035990 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:09:18.041985 version@stat F·[2] S·1KiB[1KiB] Sc·[0.50]
+16:09:18.041985 db@open opening
+16:09:18.041985 journal@recovery F·1
+16:09:18.049490 journal@recovery recovering @6
+16:09:18.120700 memdb@flush created L0@8 N·14 S·762B "Ho\b..\x90E\xc8,v31":"unc..own,v28"
+16:09:18.127675 version@stat F·[3] S·2KiB[2KiB] Sc·[0.75]
+16:09:18.255699 db@janitor F·5 G·0
+16:09:18.255699 db@open done T·213.7142ms
