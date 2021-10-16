@@ -1,0 +1,33 @@
+Required Installations
+
+Python bit and web3.py libraries (Guidelines/Resources/Blockchain_TX_Install_Guide.md)
+- Anaconda:
+    - web3 (https://web3py.readthedocs.io/en/stable/)
+      $ pip install web3
+    - bit (https://ofek.dev/bit/)
+      $ pip install bit
+
+PHP (XAMPP) and HD_Wallet_Derive (Guidelines/Resources/HD_Wallet_Derive_Install_Guide.md)
+- XAMPP
+    - Includes the PHP environment and its dependencies
+    - Download and install the XAMPP package (https://www.apachefriends.org/download.html)
+    - After installation, navigate to the `C:\xampp\php` folder (or wherever it is installed)
+    - Open the `php.ini` file in Notepad and add the following line at the end of the file: `extension=php.gmp.dll`
+    - Update `PATH` environment variables to include the PHP binaries:
+        - Open git-bash terminal as Administrator and run the following:
+          setx /M PATH "%PATH%;C:\xampp\php"
+        - Test to see if the installation is working by entering:
+          php -version
+
+- HD_Wallet_Derive
+    - Clone the hd-wallet-derive repo (https://github.com/dan-da/hd-wallet-derive)
+        - Open git-bash terminal as Administrator and run the following:
+          git clone https://github.com/dan-da/hd-wallet-derive
+          cd hd-wallet-derive
+          curl https://getcomposer.org/installer -o installer.php
+          php installer.php
+          php composer.phar install
+
+- Go Ethereum Geth & Tools (https://geth.ethereum.org/downloads/)
+
+- MyCrypto (https://app.mycrypto.com/download-desktop-app)

@@ -3,6 +3,7 @@ import subprocess
 import json
 import os
 import pprint
+from decimal import Decimal
 from dotenv import load_dotenv
 
 # Load and set environment variables
@@ -46,7 +47,7 @@ else:
     chatter('Chatter is enabled.')
 
 
-# Create a function called `derive_wallets`
+# Function called `derive_wallets`
 def derive_wallets(coin, stdout=subprocess.PIPE, shell=True):
     chatter(f'Enter mnemonic for {coin}. Leave blank to use test wallet.')
     user = input('Enter mnemonic without quotes: ')
@@ -66,7 +67,7 @@ def derive_wallets(coin, stdout=subprocess.PIPE, shell=True):
     # wallet = return json.loads(output)
     # return wallet
     
-    # Create global variables for the wallets
+    # Global variables created for the wallets, primarily for testing purposes
     if coin == ETH:
         global eth_wallet
         eth_wallet = json.loads(output)
@@ -75,24 +76,56 @@ def derive_wallets(coin, stdout=subprocess.PIPE, shell=True):
         global btctest_wallet
         btctest_wallet = json.loads(output)
         return json.loads(output)
+chatter(f'Function "derive_wallets" loaded.')
 
-# Create a dictionary object called coins to store the output from `derive_wallets`.
+
+# Dictionary object called coins to store the output from `derive_wallets`.
 coins = {
     ETH: derive_wallets(ETH),
     BTCTEST: derive_wallets(BTCTEST),
     }
 print()
+chatter(f'Wallets derived from mnemonic.')
 
 
-# Create a function called `priv_key_to_account` that converts privkey strings to account objects.
+# Function called `priv_key_to_account` that converts privkey strings to account objects.
 def priv_key_to_account(coin, priv_key):
     if coin == ETH:
         return Account.privateKeyToAccount(priv_key)
     elif coin == BTCTEST:
         return PrivateKeyTestnet(priv_key)
+chatter(f'Function "priv_key_to_account" loaded.')
 
 
-# Create a function called `create_tx` that creates an unsigned transaction appropriate metadata.
+# Wallet variables created for ease of use
+eth_address = coins[ETH][0]['address']
+eth_privkey = coins[ETH][0]['privkey']
+eth_account = priv_key_to_account(ETH, eth_privkey)
+eth_receiver = '0x26077A0eaA11E133739F070b001D28267264D24A'
+
+btctest_address = coins[BTCTEST][0]['address']
+btctest_privkey = coins[BTCTEST][0]['privkey']
+btctest_account = priv_key_to_account(BTCTEST, btctest_privkey)
+btctest_receiver = 'mnLfB25RMps3ABSqK6orbwQDQdMhC1FvS2'
+chatter(f'Wallet variables created.')
+
+
+# Function called `no_wei` converts "wei" to "ether" using `w3.fromWei` method
+def no_wei(amount):
+    print(f'Converting {amount:,} Wei to ether..')
+    web3 = Decimal(w3.fromWei(amount, "ether"))
+    chatter(f'..results in {web3}')
+chatter(f'Function "no_wei" loaded.')
+
+
+# Function called `yes_wei` convnerts "ether" to "wei" using `w3.toWei` method
+def yes_wei(amount):
+    print(f'Convert {amount:,} Ether to wei..')
+    web3 = w3.toWei(Decimal(amount), "ether")
+chatter(f'Function "yes_wei" loaded.')
+
+
+# Function called `create_tx` that creates an unsigned transaction appropriate metadata.
 def create_tx(coin, account, to, amount):
     chatter(f'Creating unsigned {coin} transaction..')
     if coin == ETH:
@@ -109,9 +142,10 @@ def create_tx(coin, account, to, amount):
         }
     elif coin == BTCTEST:
         return PrivateKeyTestnet.prepare_transaction(account.address, [(to, amount, BTC)])
+chatter(f'Function "create_tx" loaded.')
 
 
-# Create a function called `send_tx` that calls `create_tx`, signs and sends the transaction.
+# Function called `send_tx` that calls `create_tx`, signs and sends the transaction.
 def send_tx(coin, account, to, amount):
     if coin == ETH:
         raw_tx = create_tx(coin, account, to, amount)
@@ -128,19 +162,12 @@ def send_tx(coin, account, to, amount):
         signed_tx = account.sign_transaction(raw_tx)
         chatter('Transaction sent.')
         return NetworkAPI.broadcast_tx_testnet(signed_tx)
+chatter(f'Function "send_tx" loaded.')
 
 
-# Create wallet variables
-eth_account = priv_key_to_account(ETH, eth_privkey)
-eth_address = coins[ETH][0]['address']
-eth_privkey = coins[ETH][0]['privkey']
-eth_receiver = '0x26077A0eaA11E133739F070b001D28267264D24A'
-btctest_account = priv_key_to_account(BTCTEST, btctest_privkey)
-btctest_address = coins[BTCTEST][0]['address']
-btctest_privkey = coins[BTCTEST][0]['privkey']
-btctest_receiver = 'mnLfB25RMps3ABSqK6orbwQDQdMhC1FvS2'
-
-
+# # Converting between "ether" and "wei"
+# chatter(f'no_wei({amount})')
+# chatter(f'yes_wei({amount})')
 
 # # ETH Transaction
 # chatter(f'# Commands to send a transaction using ETH:')
